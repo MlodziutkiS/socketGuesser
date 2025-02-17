@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Socket Guesser</title>
@@ -30,15 +31,15 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
       const socket = io();
-      socket.emit("message","value")
+      socket.emit("message","value");
     </script>
 </head>
 <body style="background-color: #555;">
         <nav style="height: 8vh; display: flex; flex-direction: row; flex-wrap: nowrap;">
         <a href="/" style="display: flex; text-align: center; flex-grow: 4;"><h1>1v1 guesser</h1><image src="./oelyx.png"></image></a>
         <aside style="display: flex; flex-direction: row;flex-grow: 2;" >
-        <button>Play!</button>
-        <button>About</button>
+        <button hx-get="./play" hx-target="#insertable">Play!</button>
+        <button hx-get="./about"  hx-target="#insertable">About</button>
         </aside>
     </nav>
     <div id="insertable" style="height: 87vh; background-color: #aaa;"></div>
