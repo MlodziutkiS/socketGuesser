@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket Guesser</title>
+    <style>
+        *{
+            margin: 0;
+        }
+        nav button{
+            border-radius: 1em;
+            width: 50%;
+        }
+        a{
+            text-decoration: none;
+        }
+        a:visited{
+            color: #000;
+        }
+        nav{
+            height: 8vh;
+        }
+        nav *{
+            height: 8vh;
+            margin-left: 1em;
+            margin-right: 1em;
+        }
+    </style>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+      socket.emit("message","value")
+    </script>
+</head>
+<body style="background-color: #555;">
+        <nav style="height: 8vh; display: flex; flex-direction: row; flex-wrap: nowrap;">
+        <a href="/" style="display: flex; text-align: center; flex-grow: 4;"><h1>1v1 guesser</h1><image src="./oelyx.png"></image></a>
+        <aside style="display: flex; flex-direction: row;flex-grow: 2;" >
+        <button>Play!</button>
+        <button>About</button>
+        </aside>
+    </nav>
+    <div id="insertable" style="height: 87vh; background-color: #aaa;"></div>
+    <footer style="height: 5vh; text-align: center; display: flex; align-items: center; justify-content: center;">
+        <span>
+        check out my <a href="https://github.com/MlodziutkiS" target="_blank" style="color:#aaa">Github</a>
+        </span>
+    </footer>
+</body>
+</html>
