@@ -1,0 +1,105 @@
+<style>
+    #secure{
+        height: 3em; width: 3em;background-color: #777;
+        text-align: center;
+        border: none;
+        outline: solid #3aa 2px;
+        outline-offset: -0.5em;
+    }
+    #begin{
+        outline: none;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        background-color: #777;
+        border: none;
+    }
+    #begin:active{
+        background-color: #888;
+    }
+    #secBoolDisp{
+        width: 4em;background-color: #777;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    #durationDisp{
+        width: 2em;
+    }
+    #pressureDisp{
+        width: 2em;
+    }
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+
+    #pressureInformator{
+        width: 15em;
+        display: none;
+        position: absolute;
+        background-color: #888;
+        border: 1px solid black;
+        bottom: 2em;
+        left: 10em;
+    }
+
+    #pressureInfo:hover + #pressureInformator{
+        display: inline;
+    }
+    
+</style>
+<script>
+    let secureBool= false;
+    function handlePrivacySw(element){
+        console.log(element)
+        if(secureBool){
+            element.children[0].style.display= "inline";
+            element.children[1].style.display= "none";
+            document.getElementById("secBoolDisp").innerText="Public";
+            secureBool=false; 
+        }else{
+            element.children[0].style.display= "none";
+            element.children[1].style.display= "inline";
+            document.getElementById("secBoolDisp").innerText="Private";
+            secureBool=true;
+        }
+        console.log(secureBool)
+    }
+    function updateDuration(value){
+        document.getElementById("durationDisp").value= value;
+    }
+    function updatePressure(value){
+        document.getElementById("pressureDisp").value= value;
+    }
+</script>
+<main style="display: flex; justify-content: center;align-items: center;height: 100%;flex-direction: column;">
+        <aside style="display: flex; background-color: #777;">
+        <span id="secBoolDisp">Public</span>
+        <button id="secure" onclick="handlePrivacySw(this)">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff"><path d="M240-160h480v-400H240v400Zm240-120q33 0 56.5-23.5T560-360q0-33-23.5-56.5T480-440q-33 0-56.5 23.5T400-360q0 33 23.5 56.5T480-280ZM240-160v-400 400Zm0 80q-33 0-56.5-23.5T160-160v-400q0-33 23.5-56.5T240-640h280v-80q0-83 58.5-141.5T720-920q83 0 141.5 58.5T920-720h-80q0-50-35-85t-85-35q-50 0-85 35t-35 85v80h120q33 0 56.5 23.5T800-560v400q0 33-23.5 56.5T720-80H240Z"/></svg>
+        <svg style="display:none" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff"><path d="M240-80q-33 0-56.5-23.5T160-160v-400q0-33 23.5-56.5T240-640h40v-80q0-83 58.5-141.5T480-920q83 0 141.5 58.5T680-720v80h40q33 0 56.5 23.5T800-560v400q0 33-23.5 56.5T720-80H240Zm0-80h480v-400H240v400Zm240-120q33 0 56.5-23.5T560-360q0-33-23.5-56.5T480-440q-33 0-56.5 23.5T400-360q0 33 23.5 56.5T480-280ZM360-640h240v-80q0-50-35-85t-85-35q-50 0-85 35t-35 85v80ZM240-160v-400 400Z"/></svg>
+        </button>
+        </aside>
+        <aside style="display: flex; flex-direction: column;">
+            <span>Round duration: <input type="number" id="durationDisp" placeholder="30">s</span>
+            <input type="range" value="30" min="1" max="60" oninput="updateDuration(this.value)">
+        </aside>
+        <aside style="display: flex; flex-direction: column;position: relative;">
+            <span style="display: flex; flex-direction: row; justify-content: center; align-items: center;">Time pressure: <input type="number" id="pressureDisp" placeholder="5">s <svg id="pressureInfo" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="M478-240q21 0 35.5-14.5T528-290q0-21-14.5-35.5T478-340q-21 0-35.5 14.5T428-290q0 21 14.5 35.5T478-240Zm-36-154h74q0-33 7.5-52t42.5-52q26-26 41-49.5t15-56.5q0-56-41-86t-97-30q-57 0-92.5 30T342-618l66 26q5-18 22.5-39t53.5-21q32 0 48 17.5t16 38.5q0 20-12 37.5T506-526q-44 39-54 59t-10 73Zm38 314q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
+            <p id="pressureInformator">After the first player takes a guess the timer is cut by this ammount</p>
+            </span>
+            <input type="range" value="5" min="0" max="20" oninput="updatePressure(this.value)">
+        </aside>
+        <aside>
+            <button id="begin" onclick="handleStart()">
+            <span>Begin</span>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff"><path d="M762-96 645-212l-88 88-28-28q-23-23-23-57t23-57l169-169q23-23 57-23t57 23l28 28-88 88 116 117q12 12 12 28t-12 28l-50 50q-12 12-28 12t-28-12Zm118-628L426-270l5 4q23 23 23 57t-23 57l-28 28-88-88L198-96q-12 12-28 12t-28-12l-50-50q-12-12-12-28t12-28l116-117-88-88 28-28q23-23 57-23t57 23l4 5 454-454h160v160ZM334-583l24-23 23-24-23 24-24 23Zm-56 57L80-724v-160h160l198 198-57 56-174-174h-47v47l174 174-56 57Zm92 199 430-430v-47h-47L323-374l47 47Zm0 0-24-23-23-24 23 24 24 23Z"/></svg>
+            </button>
+        </aside>
+</main>
