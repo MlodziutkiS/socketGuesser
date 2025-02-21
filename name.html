@@ -1,0 +1,15 @@
+
+<label for="namein">enter your name</label>
+<input name="namein" id="nameInput" type="text" oninput="handleNameChange(this)" value="guest">
+<script>
+    try{
+        let name=localStorage.getItem("name").value
+    }catch{
+        let name="guest"
+    }
+    document.getElementById("nameInput").value = name;
+    function handleNameChange(inval){
+        let newName= document.getElementById("nameInput").value;
+        localStorage.setItem("name", newName);
+    }
+</script>

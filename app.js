@@ -28,8 +28,8 @@ app.get('/about', (req,res)=>{
 
 io.on('connection', (socket) => {
     console.log('a user connected');
-    socket.on("message",(packet)=>{
-      console.log('user sent', packet)
+    socket.on("newRoom",(packet)=>{
+      
     })
     socket.on('disconnect', () => {
       console.log('user disconnected');

@@ -77,6 +77,11 @@
     function updatePressure(value){
         document.getElementById("pressureDisp").value= value;
     }
+    function handleStart(){
+        const dura = document.getElementById("durationDisp").value == ''? document.getElementById("durationDisp").placeholder : document.getElementById("durationDisp").value;
+        const pres = document.getElementById("pressureDisp").value == ''? document.getElementById("pressureDisp").placeholder : document.getElementById("pressureDisp").value;
+        socket.emit("newRoom", {secureBool, dura, pres});
+    }
 </script>
 <main style="display: flex; justify-content: center;align-items: center;height: 100%;flex-direction: column;">
         <aside style="display: flex; background-color: #777;">
