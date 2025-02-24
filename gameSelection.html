@@ -2,14 +2,70 @@
     .pad{
         padding: 1em;
     }
+    .joinDisp > button{
+        display: none;
+    }
+    .joinDisp:hover > button{
+        display: inline;
+    }
+    .joinDisp:hover > span{
+        display: none;
+    }
+    .joinDisp > span{
+        display: inline;
+    }
 </style>
+<script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
+<script>
+    function handleJoin(roomId){
+        console.log("Joining ",roomId);
+    }
+    async function getRooms() {
+        const url = "http://localhost:3000/rooms";
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            const rooms = await response.json();
+
+            const tableBody = document.getElementById("table");
+            tableBody.innerHTML = '';
+
+            rooms.forEach(room => {
+                const roomRow = document.createElement("tr");
+
+                roomRow.innerHTML = `
+                    <td>${room.id}</td>
+                    <td>${room.duration}s</td>
+                    <td>${room.pressure}s</td>
+                    <td class="joinDisp">
+                        <span>${room.secure}</span>
+                        <button onclick="handleJoin('${room.id}')">Join</button>
+                    </td>
+                `;
+                tableBody.appendChild(roomRow);
+            });
+        } catch (error) {
+            console.error("Error fetching rooms:", error.message);
+        }
+    }
+</script>
 <main style="display: flex;flex-direction: row;align-items: center; justify-content: center; height: 100%;">
     <span style="margin: 1em;">
         <button class="pad" hx-get="/play/newroom" hx-target="#insertable">Create a room</button>
     </span>
     <h2 style="margin: 1em;">or</h2>
     <span style="margin: 1em;">
-        <input type="text" name="roomCode" style="font-size: larger;" placeholder="Enter room code">
-        <button class="pad">Join</button>
+        <h3>Join a room</h3>
+        <button onclick="getRooms(this)">refresh!</button>
+        <table>
+            <thead><tr>
+                <th>Host</th><th>duration</th><th>pressure</th><th>lock</th>
+            </thead></tr>
+            <tbody id="table">
+                <tr><td>Admin</td><td>30s</td><td>5s</td><td class="joinDisp"><span></span><button onclick="handleJoin()">Join</button></td></tr>
+            </tbody>
+        </table>
     </span>
 </main>
