@@ -36,7 +36,9 @@ io.on('connection', (socket) => {
    // users.push({socket.id})
     console.log('a user connected');
     socket.on("newRoom",(params)=>{
-      console.log("duration", params.dura, "pressure", params.pres, "secure", params.secureBool)
+      rooms = rooms.filter(obj => obj.id !==socket.id);
+      console.log("cleared rooms that were dubles")
+      console.table(rooms);
       rooms.push({id: socket.id, duration: params.dura, pressure: params.pres, secure: params.secureBool})
       console.table(rooms);
     })
@@ -44,13 +46,27 @@ io.on('connection', (socket) => {
       console.log('user disconnected');
     });
     socket.on("name",(name)=>{
-     // users[socket.id].name= name;
+    const exists = users.findIndex(obj => obj.id === socket.id)
+    if(exists===-1){
+      const userObject= {id: socket.id, name: name}
+      users.push(userObject);
+    }else{
+      users[exists].name = name;
+    }
+    console.table(users)
     })
 
   });
 
 app.get('/rooms', (req,res)=>{
-  res.send(rooms);
+  const respondWith= rooms.map(room=>{
+    let match = users.find(obj => obj.id === room.id);
+    return {
+      ...room, 
+      name: match!==undefined? match.name : "guest",
+    };
+  })
+  res.send(respondWith);
 })
 
 server.listen(3000, () => {

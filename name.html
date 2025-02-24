@@ -1,13 +1,22 @@
-<label for="namein">enter your name</label>
-<input name="namein" id="nameInput" type="text" oninput="handleNameChange(this)" value="guest">
+<label for="namein" class="nameRemovable">enter your name</label>
+<input name="namein" class="nameRemovable" id="nameInput" type="text" oninput="handleNameChange(this)"  value="guest">
+<button class="nameRemovable" onclick="handleRemove()">Ok</button>
 <script>
-    try{
-        let name=localStorage.getItem("name")
-        document.getElementById("nameInput").value = name;
-    }catch{
-        let name="guest"
+    function handleRemove(){
+        document.querySelectorAll(".nameRemovable").forEach(el => el.remove());
     }
-    document.getElementById("nameInput").value = name;
+    function handleLoad(input){
+        let name = "guest"
+    try{
+        name = localStorage.getItem("name") || "guest";
+    }catch(err){
+        console.log(err)
+    }
+        input.value= name;
+    }
+
+    handleLoad(document.getElementById("nameInput"));
+
     function handleNameChange(inval){
         let newName= inval.value;
         localStorage.setItem("name", newName);
