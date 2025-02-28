@@ -37,7 +37,7 @@ io.on('connection', (socket) => {
     console.log('a user connected', socket.id);
     socket.on("newRoom",(params)=>{
       rooms = rooms.filter(obj => obj.id !==socket.id);
-      console.log("cleared rooms that were dubles")x§
+      console.log("cleared rooms that were dubles");
       console.table(rooms);
       rooms.push({id: socket.id, duration: params.dura, pressure: params.pres, secure: params.secureBool})
       console.table(rooms);
