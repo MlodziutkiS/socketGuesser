@@ -34,10 +34,10 @@ let users=[{id: 'skibidi', name: 'toilet'}]
 
 io.on('connection', (socket) => {
    // users.push({socket.id})
-    console.log('a user connected');
+    console.log('a user connected', socket.id);
     socket.on("newRoom",(params)=>{
       rooms = rooms.filter(obj => obj.id !==socket.id);
-      console.log("cleared rooms that were dubles")
+      console.log("cleared rooms that were dubles")x§
       console.table(rooms);
       rooms.push({id: socket.id, duration: params.dura, pressure: params.pres, secure: params.secureBool})
       console.table(rooms);
@@ -54,6 +54,37 @@ io.on('connection', (socket) => {
       users[exists].name = name;
     }
     console.table(users)
+    })
+    socket.on("join", (toId)=>{
+      const exists = rooms.findIndex(obj => obj.id === toId)
+      if(exists ===-1){
+        socket.emit("error", "room doesnt exist")
+      }else{
+        if(rooms[exists].secure === true){
+          io.to(toId).emit("join-requested", users.find(obj => obj.id===socket.id))
+          console.log("requested to join")
+          //handle sending join request
+        }else{
+          //just join
+          socket.join(toId);
+          console.log("user joined room")
+        }
+      }
+    })
+    socket.on("accept", (fromId)=>{
+      io.to(fromId).emit("status", "your request was accepted")
+      const joinerSocket= io.sockets.sockets.get(fromId);
+      if(joinerSocket){
+         joinerSocket.join(socket.id);
+         socket.to(socket.id).emit("status", "a user joined the room")
+      }else{
+        socket.emit("status", "request is not valid")
+      }
+    })
+    socket.on("reject", (fromId)=>{
+      const joinerSocket= io.sockets.sockets.get(fromId);
+      const msg= "your request to join "+ users.find(obj => obj.id === socket.id).name + " was rejected";
+      socket.to(joinerSocket).emit("status", msg);
     })
 
   });

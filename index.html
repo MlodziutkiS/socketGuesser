@@ -31,6 +31,9 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
       const socket = io();
+      socket.on("status",(msg)=>{
+        console.log(msg);
+      })
     </script>
 </head>
 <body style="background-color: #555;">

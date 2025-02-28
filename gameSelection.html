@@ -19,6 +19,7 @@
 <script>
     function handleJoin(roomId){
         console.log("Joining ",roomId);
+        socket.emit("join", roomId);
     }
     async function getRooms() {
         const url = "http://localhost:3000/rooms";

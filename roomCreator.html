@@ -83,10 +83,44 @@
         const dura = document.getElementById("durationDisp").value == ''? document.getElementById("durationDisp").placeholder : document.getElementById("durationDisp").value;
         const pres = document.getElementById("pressureDisp").value == ''? document.getElementById("pressureDisp").placeholder : document.getElementById("pressureDisp").value;
         socket.emit("newRoom", {secureBool, dura, pres});
-        socket.emit("name", localStorage.getItem("name") || "guest")
+        socket.emit("name", localStorage.getItem("name") || "guest");
+
+        document.getElementById("starter").innerHTML="";
+
+        const lobby=document.createElement("aside");
+        lobby.innerHTML= `
+        <h2>room started</h2>
+        <p>waiting for players</p>
+        <table>
+            <thead><tr>
+                <td>Username</td><td>Accept request/kick</td>
+            </tr></thead>
+            <tbody id="playerTable">
+                <tr><td>Placeholder</td><td><button id="test" onclick="handleOption(this, 'accept')">accept</button></td></tr>
+            </tbody>
+        </table>
+        `
+
+        document.getElementById("starter").appendChild(lobby);
     }
+    function handleOption(caller, action, userId){
+        if(action==="accept"){
+            console.log("accepted");
+            socket.emit("accept", userId);
+        }else{
+            caller.parentNode.parentNode.remove();
+            console.log("rejected");
+            socket.emit("reject", userId);
+        }
+    }
+    socket.on("join-requested", (userRequesting)=>{
+        const playerEntry= document.createElement("tr")
+        console.log("requset sent by", userRequesting)
+        playerEntry.innerHTML= "<tr><td>"+ userRequesting +`</td><td><button onclick="handleOption(this, 'accept',`+ userRequesting +`)">accept</button></td></tr>`
+        document.getElementById("playerTable").appendChild(playerEntry)
+    })
 </script>
-<main style="display: flex; justify-content: center;align-items: center;height: 100%;flex-direction: column;">
+<main id="starter" style="display: flex; justify-content: center;align-items: center;height: 100%;flex-direction: column;">
         <aside style="display: flex; background-color: #777;">
         <span id="secBoolDisp">Public</span>
         <button id="secure" onclick="handlePrivacySw(this)">
